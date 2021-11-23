@@ -13,7 +13,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {
     const internalRef = React.useRef<HTMLInputElement>();
     useEffect(() => {
-      // iPhoneでradio/checkboxのinputにfocusが当たらない(スクロールしない)問題のワークアラウンド
+      // iOSでradio/checkboxのinputにfocusが当たらない(スクロールしない)問題のワークアラウンド
       if (props.type !== "radio" && props.type !== "checkbox") {
         return;
       }
