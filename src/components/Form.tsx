@@ -13,7 +13,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {
     const internalRef = React.useRef<HTMLInputElement>();
 
-    // iOSでradio/checkboxのinputにfocusが当たらない(スクロールしない)問題のワークアラウンド
+    // バリデーションエラー発生時にiOSでradio/checkboxのinputにスクロールしない問題のワークアラウンド
     useEffect(() => {
       if (props.type !== "radio" && props.type !== "checkbox") {
         return;
@@ -23,17 +23,24 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
 
       internalRef.current?.addEventListener("focus", (e) => {
-        const element = e.target as HTMLInputElement;
-        const rect = element.getBoundingClientRect();
-        const isInView = 0 < rect.bottom && rect.top < window.innerHeight;
-        // radio/checkboxをタップしたときはスクロールしない
-        if (isInView) return;
+        try {
+          const element = e.target as HTMLInputElement;
+          const rect = element.getBoundingClientRect();
+          const isInView = 0 < rect.bottom && rect.top < window.innerHeight;
+          // radio/checkboxをタップしたときはスクロールしない
+          if (isInView) return;
 
-        // バリデーションエラー発生時のみスクロールする
-        element.scrollIntoView({
-          block: "center",
-          behavior: "smooth",
-        });
+          // バリデーションエラー発生時のみスクロールする
+          element.scrollIntoView({
+            block: "center",
+            behavior: "smooth",
+          });
+        } catch (e) {
+          console.error(
+            "バリデーションエラー発生時にiOSでradio/checkboxのinputにスクロールさせるのに失敗",
+            e
+          );
+        }
       });
     }, []);
     return <input ref={useMergeRefs(internalRef, ref)} {...props} />;
