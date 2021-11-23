@@ -13,7 +13,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   (props, ref) => {
     const internalRef = React.useRef<HTMLInputElement>();
     useEffect(() => {
-      // iPhoneでradio/checkboxのinputにfocusが当たらない問題のワークアラウンド
+      // iPhoneでradio/checkboxのinputにfocusが当たらない(スクロールしない)問題のワークアラウンド
       if (props.type !== "radio" && props.type !== "checkbox") {
         return;
       }
@@ -22,7 +22,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
 
       internalRef.current?.addEventListener("focus", (e) => {
-        (e.target as HTMLInputElement).scrollIntoView({
+        const element = e.target as HTMLInputElement;
+        const rect = element.getBoundingClientRect();
+        const isInView = 0 < rect.bottom && rect.top < window.innerHeight;
+        // radio/checkboxをタップしたときはスクロールしない
+        if (isInView) return;
+
+        // バリデーションエラー発生時のみスクロールする
+        element.scrollIntoView({
           block: "center",
           behavior: "smooth",
         });

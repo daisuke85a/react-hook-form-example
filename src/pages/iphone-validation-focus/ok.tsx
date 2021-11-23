@@ -70,7 +70,7 @@ const Home: NextPage = () => {
                   <div className="px-4 py-5 bg-white rounded-md space-y-2 sm:p-6 shadow">
                     <div className="py-2 text-base font-medium text-gray-900">
                       Q2. 得意な職業はどれですか？
-                      {errors?.language && (
+                      {errors?.job && (
                         <p className="text-red-500 py-2 px-2">
                           <span>選択してください</span>
                         </p>
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
                   <div className="px-4 py-5 bg-white rounded-md space-y-2 sm:p-6 shadow">
                     <div className="py-2 text-base font-medium text-gray-900">
                       Q3. 得意なフェーズはどれですか？
-                      {errors?.language && (
+                      {errors?.phase && (
                         <p className="text-red-500 py-2 px-2">
                           <span>選択してください</span>
                         </p>
